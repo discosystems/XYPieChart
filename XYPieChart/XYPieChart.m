@@ -101,6 +101,9 @@
     //animation control
     NSTimer *_animationTimer;
     NSMutableArray *_animations;
+    
+    // gap angle between slices.
+    CGFloat sliceGapAngle;
 }
 
 static NSUInteger kDefaultSliceZOrder = 100;
@@ -254,6 +257,9 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
 
 #pragma mark - Pie Reload Data With Animation
 
+static CGFloat const kXYPieChartSliceGapAngleDefault = 0.005f;
+static CGFloat const kXYPieChartSliceGapAngleZero = 0.f;
+
 - (void)reloadData
 {
     if (_dataSource)
@@ -272,6 +278,9 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
         double endToAngle = startToAngle;
         
         NSUInteger sliceCount = [_dataSource numberOfSlicesInPieChart:self];
+        
+        // update the slice gap angle according to the slice count.
+        sliceGapAngle = (sliceCount > 1) ? kXYPieChartSliceGapAngleDefault : kXYPieChartSliceGapAngleZero;
         
         double sum = 0.0;
         double values[sliceCount];
@@ -389,11 +398,11 @@ static CGPathRef CGPathCreateArc(CGPoint center, CGFloat radius, CGFloat startAn
             [self updateLabelForLayer:layer value:values[index]];
             [layer createArcAnimationForKey:@"startAngle"
                                   fromValue:[NSNumber numberWithDouble:startFromAngle]
-                                    toValue:[NSNumber numberWithDouble:startToAngle+_startPieAngle] 
+                                    toValue:[NSNumber numberWithDouble:startToAngle+_startPieAngle + sliceGapAngle]
                                    Delegate:self];
             [layer createArcAnimationForKey:@"endAngle" 
                                   fromValue:[NSNumber numberWithDouble:endFromAngle]
-                                    toValue:[NSNumber numberWithDouble:endToAngle+_startPieAngle] 
+                                    toValue:[NSNumber numberWithDouble:endToAngle+_startPieAngle - sliceGapAngle]
                                    Delegate:self];
             startToAngle = endToAngle;
         }
