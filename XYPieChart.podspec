@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "XYPieChart"
-  s.version      = "0.2"
+  s.version      = "0.2.2"
   s.summary      = "A simple and animated Pie Chart for your iOS app."
 
   s.description  = <<-DESC
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.platform     = :ios, '5.0'
 
-  s.source       = { :git => "https://github.com/xyfeng/XYPieChart.git", :tag => "v0.2" }
+  s.source       = { :git => "https://github.com/discosystems/XYPieChart.git", :tag => "0.2.2" }
 
   s.source_files  = 'XYPieChart'
 
